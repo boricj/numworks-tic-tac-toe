@@ -1,0 +1,4 @@
+TicTacToeApp = "Tic-tac-toe"
+TicTacToeAppCapital = "TIC-TAC-TOE"
+NewGame = "New game"
+Settings = "Settings"
