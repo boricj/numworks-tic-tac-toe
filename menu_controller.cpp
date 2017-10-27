@@ -6,7 +6,9 @@ namespace Tictactoe {
 
 MenuController::MenuController(Responder * parentResponder) :
   ViewController(parentResponder),
-  m_selectableTableView(this, this, 0, 1, Metric::CommonTopMargin, Metric::CommonRightMargin, Metric::CommonBottomMargin, Metric::CommonLeftMargin, this)
+  m_selectableTableView(this, this, 0, 1, Metric::CommonTopMargin, Metric::CommonRightMargin, Metric::CommonBottomMargin, Metric::CommonLeftMargin, this),
+  m_board(3, 3, 3),
+  m_boardController(&m_selectableTableView, m_board)
 {
 }
 
@@ -20,11 +22,11 @@ void MenuController::didBecomeFirstResponder() {
 }
 
 bool MenuController::handleEvent(Ion::Events::Event event) {
-  /*ViewController * vc[2] = {&m_editorController, &m_executorController};
+  /*ViewController * vc[2] = {&m_editorController, &m_executorController};*/
   if (event == Ion::Events::OK || event == Ion::Events::EXE) {
-    app()->displayModalViewController(vc[selectedRow()], 0.5f, 0.5f);
+    app()->displayModalViewController(&m_boardController, 0.5f, 0.5f);
     return true;
-  }*/
+  }
   return false;
 }
 

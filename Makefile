@@ -3,6 +3,9 @@ snapshot_headers += apps/tic_tac_toe/app.h
 
 app_objs += $(addprefix apps/tic_tac_toe/,\
   app.o\
+  board.o\
+  board_cell.o\
+  board_controller.o\
   menu_controller.o\
 )
 

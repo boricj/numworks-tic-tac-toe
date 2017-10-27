@@ -2,6 +2,8 @@
 #define TICTACTOE_MENU_CONTROLLER_H
 
 #include <escher.h>
+#include "board.h"
+#include "board_controller.h"
 
 namespace Tictactoe {
 
@@ -20,6 +22,8 @@ private:
   constexpr static int k_totalNumberOfCells = 2;
   MessageTableCell m_cells[k_totalNumberOfCells];
   SelectableTableView m_selectableTableView;
+  Board m_board;
+  BoardController m_boardController;
 };
 
 }
