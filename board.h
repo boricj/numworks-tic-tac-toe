@@ -17,12 +17,15 @@ public:
   const CellState & get(int x, int y) const;
   bool place(int x, int y);
   CellState playerTurn() const;
+  CellState winner() const;
   int width() const { return m_m; }
   int height() const  { return m_n; }
 private:
+  CellState checkWinner() const;
   int m_m, m_n, m_k;
   CellState * m_cells;
   CellState m_playerTurn;
+  CellState m_winner;
 };
 
 }
