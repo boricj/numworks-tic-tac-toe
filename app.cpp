@@ -35,8 +35,9 @@ void App::Snapshot::reset() {
 }
 
 App::App(Container * container, Snapshot * snapshot) :
-  ::App(container, snapshot, &m_menuController),
-  m_menuController(this)
+  ::App(container, snapshot, &m_boardController),
+  m_board(3, 3, 3),
+  m_boardController(this, m_board)
 {
 }
 
