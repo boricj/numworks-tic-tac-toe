@@ -11,6 +11,8 @@ public:
   BoardCell(const Board::CellState & cellState);
   void drawRect(KDContext * ctx, KDRect rect) const override;
 private:
+  void drawCross(KDContext * ctx) const;
+  void drawCircle(KDContext * ctx) const;
   const Board::CellState & m_cellState;
 };
 
