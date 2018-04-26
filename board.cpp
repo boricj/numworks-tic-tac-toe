@@ -5,7 +5,7 @@ extern "C" {
 }
 
 namespace Tictactoe {
-  Board::Board(int m, int n, int k) : m_m(m), m_n(n), m_k(k) {
+  Board::Board(int m, int n, int k) : m_m(m), m_n(n), m_k(k), m_turnCount(0) {
     assert(m > 0);
     assert(n > 0);
     assert(k > 0);
@@ -52,7 +52,7 @@ namespace Tictactoe {
     }
 
     m_winner = checkWinner();
-    if (m_winner != Board::CellState::Empty) {
+    if (m_winner != Board::CellState::Empty || (++m_turnCount == width() * height())) {
       m_playerTurn = Board::CellState::Empty;
     }
 
@@ -61,6 +61,11 @@ namespace Tictactoe {
 
   Board::CellState Board::playerTurn() const {
     return m_playerTurn;
+  }
+
+  int Board::turnCount() const
+  {
+    return m_turnCount;
   }
 
   Board::CellState Board::winner() const {

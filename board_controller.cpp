@@ -1,6 +1,5 @@
 #include "board_controller.h"
 
-#include <memory>
 extern "C" {
 #include <assert.h>
 }
@@ -9,31 +8,42 @@ extern "C" {
 
 namespace Tictactoe {
 
-BoardController::BoardController(Responder * parentResponder, Board & board):
+BoardController::BoardController(Responder * parentResponder, Board * board):
   ViewController(parentResponder),
-  m_board(board),
-  m_cells(new BoardCell*[board.width()*board.height()]),
+  m_board(nullptr),
+  m_cells(nullptr),
   m_selectableTableView(this, this, this, this)
 {
-  for (int y = 0; y < m_board.height(); y++) {
-    for (int x = 0; x < m_board.width(); x++) {
-      m_cells[y*m_board.width()+x] = new BoardCell(m_board.get(x, y));
-    }
-  }
+  setBoard(board);
 }
 
 BoardController::~BoardController() {
-  for (int y = 0; y < m_board.height(); y++) {
-    for (int x = 0; x < m_board.width(); x++) {
-      delete m_cells[y*m_board.width()+x];
-    }
-  }
-  delete[] m_cells;
+  setBoard(nullptr);
 }
 
 bool BoardController::handleEvent(Ion::Events::Event event) {
   if (event == Ion::Events::OK || event == Ion::Events::EXE) {
-    m_board.place(selectedColumn(), selectedRow());
+    if (m_board->place(selectedColumn(), selectedRow()))
+    {
+      if (m_board->winner() != Board::CellState::Empty || m_board->playerTurn() == Board::CellState::Empty)
+      {
+        I18n::Message msg;
+        switch (m_board->winner())
+        {
+          case Board::CellState::Red:
+            msg = I18n::Message::TicTacToeRedWins;
+            break;
+          case Board::CellState::Blue:
+            msg = I18n::Message::TicTacToeBlueWins;
+            break;
+          default:
+            msg = I18n::Message::TicTacToeStalemate;
+            break;
+        }
+        app()->displayWarning(msg);
+        return true;
+      }
+    }
     m_selectableTableView.reloadData();
     return true;
   }
@@ -58,11 +68,11 @@ View * BoardController::view() {
 }
 
 int BoardController::numberOfRows() {
-  return m_board.height();
+  return m_board->height();
 }
 
 int BoardController::numberOfColumns() {
-  return m_board.width();
+  return m_board->width();
 }
 
 KDCoordinate BoardController::cellHeight() {
@@ -78,7 +88,34 @@ HighlightCell * BoardController::reusableCell(int index) {
 }
 
 int BoardController::reusableCellCount() {
-  return m_board.width() * m_board.height();
+  return m_board->width() * m_board->height();
+}
+
+void BoardController::setBoard(Board * board) {
+  if (m_cells) {
+    for (int y = 0; y < m_height; y++) {
+      for (int x = 0; x < m_width; x++) {
+        delete m_cells[y*m_width+x];
+      }
+    }
+    delete[] m_cells;
+    m_cells = nullptr;
+  }
+  m_board = board;
+  if (board)
+  {
+    m_cells = new BoardCell*[m_board->width()*m_board->height()];
+    
+    for (int y = 0; y < m_board->height(); y++) {
+      for (int x = 0; x < m_board->width(); x++) {
+        m_cells[y*m_board->width()+x] = new BoardCell(m_board->get(x, y));
+      }
+    }
+
+    m_width = m_board->width();
+    m_height = m_board->height();
+    m_selectableTableView.reloadData(false);
+  }
 }
 
 }

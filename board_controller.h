@@ -9,7 +9,7 @@ namespace Tictactoe {
 
 class BoardController : public ViewController, public SimpleTableViewDataSource, public SelectableTableViewDataSource, public SelectableTableViewDelegate {
 public:
-  BoardController(Responder * parentResponder, Board & board);
+  BoardController(Responder * parentResponder, Board * board);
   ~BoardController();
 
   View * view() override;
@@ -24,12 +24,13 @@ public:
   virtual KDCoordinate cellWidth() override;
   virtual HighlightCell * reusableCell(int index) override;
   virtual int reusableCellCount() override;
-  /*void willDisplayCellAtLocation(HighlightCell * cell, int i, int j) override;
-  void tableViewDidChangeSelection(SelectableTableView * t, int previousSelectedCellX, int previousSelectedCellY) override;*/
+  void setBoard(Board * board);
 private:
-  Board & m_board;
+  Board * m_board;
   BoardCell ** m_cells;
   SelectableTableView m_selectableTableView;
+  int m_width;
+  int m_height;
 };
 
 }

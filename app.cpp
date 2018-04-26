@@ -35,7 +35,7 @@ void App::Snapshot::reset() {
 }
 
 App::App(Container * container, Snapshot * snapshot) :
-  ::App(container, snapshot, &m_stackViewController),
+  Shared::TextFieldDelegateApp(container, snapshot, &m_stackViewController),
   m_menuController(this),
   m_stackViewController(this, &m_menuController)
 {

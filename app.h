@@ -6,7 +6,7 @@
 
 namespace Tictactoe {
 
-class App : public ::App {
+class App : public Shared::TextFieldDelegateApp {
 public:
   class Descriptor : public ::App::Descriptor {
   public:
