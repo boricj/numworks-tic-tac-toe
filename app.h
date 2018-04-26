@@ -23,9 +23,8 @@ public:
   };
 private:
   App(Container * container, Snapshot * snapshot);
-//   MenuController m_menuController;
-  Board m_board;
-  BoardController m_boardController;
+  MenuController m_menuController;
+  StackViewController m_stackViewController;
 };
 
 }

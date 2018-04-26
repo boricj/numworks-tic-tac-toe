@@ -24,7 +24,7 @@ void MenuController::didBecomeFirstResponder() {
 bool MenuController::handleEvent(Ion::Events::Event event) {
   /*ViewController * vc[2] = {&m_editorController, &m_executorController};*/
   if (event == Ion::Events::OK || event == Ion::Events::EXE) {
-    app()->displayModalViewController(&m_boardController, 0.5f, 0.5f);
+    stackController()->push(&m_boardController);
     return true;
   }
   return false;
@@ -53,6 +53,10 @@ void MenuController::willDisplayCellForIndex(HighlightCell * cell, int index) {
   MessageTableCell * myCell = (MessageTableCell *)cell;
   I18n::Message titles[k_totalNumberOfCells] = {I18n::Message::NewGame, I18n::Message::Settings};
   myCell->setMessage(titles[index]);
+}
+
+StackViewController * MenuController::stackController() {
+  return static_cast<StackViewController *>(parentResponder());
 }
 
 }

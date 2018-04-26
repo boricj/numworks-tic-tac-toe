@@ -18,6 +18,7 @@ public:
   HighlightCell * reusableCell(int index) override;
   int reusableCellCount() override;
   void willDisplayCellForIndex(HighlightCell * cell, int index) override;
+  StackViewController * stackController();
 private:
   constexpr static int k_totalNumberOfCells = 2;
   MessageTableCell m_cells[k_totalNumberOfCells];
