@@ -6,7 +6,7 @@ namespace Tictactoe {
 
 MenuController::MenuController(Responder * parentResponder) :
   ViewController(parentResponder),
-  m_selectableTableView(this, this, 0, 1, Metric::CommonTopMargin, Metric::CommonRightMargin, Metric::CommonBottomMargin, Metric::CommonLeftMargin, this),
+  m_selectableTableView(this),
   m_board(3, 3, 3),
   m_boardController(&m_selectableTableView, m_board)
 {

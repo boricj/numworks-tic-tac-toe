@@ -13,7 +13,7 @@ BoardController::BoardController(Responder * parentResponder, Board & board):
   ViewController(parentResponder),
   m_board(board),
   m_cells(new BoardCell*[board.width()*board.height()]),
-  m_selectableTableView(this, this, 0, 0, Metric::CommonTopMargin, Metric::CommonRightMargin, Metric::CommonBottomMargin, Metric::CommonLeftMargin, this)
+  m_selectableTableView(this, this, this, this)
 {
   for (int y = 0; y < m_board.height(); y++) {
     for (int x = 0; x < m_board.width(); x++) {
