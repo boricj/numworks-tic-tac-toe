@@ -121,7 +121,10 @@ void BoardController::setBoard(Board * board, int iaLevel) {
 
     m_width = m_board->width();
     m_height = m_board->height();
+
     m_selectableTableView.reloadData(false);
+    m_selectableTableView.setMargins(0);
+    m_selectableTableView.setShowsIndicators(false);
   }
 }
 

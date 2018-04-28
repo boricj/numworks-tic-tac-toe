@@ -144,13 +144,13 @@ bool MenuController::textFieldDidFinishEditing(TextField * textField, const char
   switch(selectedRow())
   {
   case 1:
-    width = max(min(std::round(floatBody), 6), 2);
+    width = max(min(std::round(floatBody), 10), 2);
     break;
   case 2:
-    height = max(min(std::round(floatBody), 6), 2);
+    height = max(min(std::round(floatBody), 7), 2);
     break;
   case 3:
-    win = max(min(std::round(floatBody), 6), 2);
+    win = max(min(std::round(floatBody), 10), 2);
     break;
   case 4:
     iaLevel = max(min(std::round(floatBody), width*height*2), 0);
@@ -164,7 +164,7 @@ bool MenuController::textFieldDidFinishEditing(TextField * textField, const char
   for (int i = 1; i <= iaLevel; i++)
   {
     complexity *= width * height - i;
-    if (complexity > 1000000) {
+    if (complexity > 360360) {
       iaLevel = i-1;
       break;
     }
