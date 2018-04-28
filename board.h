@@ -12,13 +12,15 @@ public:
   } ;
 
   Board(int m, int n, int k);
+  Board(const Board & board);
   ~Board();
 
   const CellState & get(int x, int y) const;
   bool place(int x, int y);
-  CellState playerTurn() const;
-  int turnCount() const;
-  CellState winner() const;
+  void cancelPlace(int x, int y, CellState previousPlayer);
+  CellState playerTurn() const { return m_playerTurn; }
+  int turnCount() const { return m_turnCount; }
+  CellState winner() const { return m_winner; }
   int width() const { return m_m; }
   int height() const  { return m_n; }
   int winCondition() const { return m_k; }

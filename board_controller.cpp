@@ -4,28 +4,36 @@ extern "C" {
 #include <assert.h>
 }
 
+#include "ia.h"
 #include "../apps_container.h"
 
 namespace Tictactoe {
 
-BoardController::BoardController(Responder * parentResponder, Board * board):
+BoardController::BoardController(Responder * parentResponder, Board * board, int iaLevel):
   ViewController(parentResponder),
   m_board(nullptr),
   m_cells(nullptr),
   m_selectableTableView(this, this, this, this)
 {
-  setBoard(board);
+  setBoard(board, iaLevel);
 }
 
 BoardController::~BoardController() {
-  setBoard(nullptr);
+  setBoard(nullptr, 0);
 }
 
 bool BoardController::handleEvent(Ion::Events::Event event) {
   if (event == Ion::Events::OK || event == Ion::Events::EXE) {
     if (m_board->place(selectedColumn(), selectedRow()))
     {
-      if (m_board->winner() != Board::CellState::Empty || m_board->playerTurn() == Board::CellState::Empty)
+      if (m_board->playerTurn() != Board::CellState::Empty && m_iaLevel)
+      {
+        int x, y;
+        playIA(*m_board, Board::CellState::Blue, m_iaLevel, x, y);
+        m_board->place(x, y);
+        reusableCell(y * m_width + x)->reloadCell();
+      }
+      if (m_board->playerTurn() == Board::CellState::Empty)
       {
         I18n::Message msg;
         switch (m_board->winner())
@@ -91,17 +99,16 @@ int BoardController::reusableCellCount() {
   return m_board->width() * m_board->height();
 }
 
-void BoardController::setBoard(Board * board) {
+void BoardController::setBoard(Board * board, int iaLevel) {
   if (m_cells) {
-    for (int y = 0; y < m_height; y++) {
-      for (int x = 0; x < m_width; x++) {
-        delete m_cells[y*m_width+x];
-      }
+    for (int i = 0; i < m_height * m_width; i++) {
+      delete m_cells[i];
     }
     delete[] m_cells;
     m_cells = nullptr;
   }
   m_board = board;
+  m_iaLevel = iaLevel;
   if (board)
   {
     m_cells = new BoardCell*[m_board->width()*m_board->height()];

@@ -2,6 +2,7 @@
 
 extern "C" {
 #include <assert.h>
+#include <string.h>
 }
 
 namespace Tictactoe {
@@ -16,6 +17,11 @@ namespace Tictactoe {
     }
     m_playerTurn = Board::CellState::Red;
     m_winner = Board::CellState::Empty;
+  }
+
+  Board::Board(const Board & board) : m_m(board.m_m), m_n(board.m_n), m_k(board.m_k), m_playerTurn(board.m_playerTurn), m_winner(board.m_winner), m_turnCount(board.m_turnCount) {
+    m_cells = new Board::CellState[width()*height()];
+    memcpy(m_cells, board.m_cells, sizeof(Board::CellState)*width()*height());
   }
 
   Board::~Board() {
@@ -36,9 +42,6 @@ namespace Tictactoe {
     if (m_playerTurn == Board::CellState::Empty) {
       return false;
     }
-    if (x < 0 || y < 0 || x >= width() || y >= height()) {
-      return false;
-    }
     if (m_cells[y*width()+x] != Board::CellState::Empty) {
       return false;
     }
@@ -52,24 +55,18 @@ namespace Tictactoe {
     }
 
     m_winner = checkWinner();
-    if (m_winner != Board::CellState::Empty || (++m_turnCount == width() * height())) {
+    if (++m_turnCount == width() * height() || m_winner != Board::CellState::Empty) {
       m_playerTurn = Board::CellState::Empty;
     }
 
     return true;
   }
 
-  Board::CellState Board::playerTurn() const {
-    return m_playerTurn;
-  }
-
-  int Board::turnCount() const
-  {
-    return m_turnCount;
-  }
-
-  Board::CellState Board::winner() const {
-    return m_winner;
+  void Board::cancelPlace(int x, int y, Board::CellState previousPlayer) {
+    m_cells[y*width()+x] = Board::CellState::Empty;
+    m_playerTurn = previousPlayer;
+    m_turnCount--;
+    m_winner = Board::CellState::Empty;
   }
 
   Board::CellState Board::checkWinner() const {
@@ -85,8 +82,10 @@ namespace Tictactoe {
             break;
           case Board::CellState::Red:
             consecutiveRed++;
+            consecutiveBlue = 0;
             break;
           case Board::CellState::Blue:
+            consecutiveRed = 0;
             consecutiveBlue++;
             break;
         }
@@ -112,8 +111,10 @@ namespace Tictactoe {
             break;
           case Board::CellState::Red:
             consecutiveRed++;
+            consecutiveBlue = 0;
             break;
           case Board::CellState::Blue:
+            consecutiveRed = 0;
             consecutiveBlue++;
             break;
         }
@@ -139,8 +140,10 @@ namespace Tictactoe {
             break;
           case Board::CellState::Red:
             consecutiveRed++;
+            consecutiveBlue = 0;
             break;
           case Board::CellState::Blue:
+            consecutiveRed = 0;
             consecutiveBlue++;
             break;
         }
@@ -166,8 +169,10 @@ namespace Tictactoe {
             break;
           case Board::CellState::Red:
             consecutiveRed++;
+            consecutiveBlue = 0;
             break;
           case Board::CellState::Blue:
+            consecutiveRed = 0;
             consecutiveBlue++;
             break;
         }

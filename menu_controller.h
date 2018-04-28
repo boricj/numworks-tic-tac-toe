@@ -34,6 +34,7 @@ private:
   MessageTableCellWithEditableText m_editableCellWidth;
   MessageTableCellWithEditableText m_editableCellHeight;
   MessageTableCellWithEditableText m_editableCellWinCondition;
+  MessageTableCellWithEditableText m_editableCellIALevel;
   MessageTree * m_messageTreeModel;
   SelectableTableView m_selectableTableView;
   Board * m_board;

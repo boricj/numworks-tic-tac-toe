@@ -6,6 +6,7 @@ app_objs += $(addprefix apps/tic_tac_toe/,\
   board.o\
   board_cell.o\
   board_controller.o\
+  ia.o\
   menu_controller.o\
 )
 
