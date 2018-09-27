@@ -1,5 +1,6 @@
 #include "menu_controller.h"
 #include "../i18n.h"
+#include "../shared/poincare_helpers.h"
 #include <assert.h>
 
 using namespace Poincare;
@@ -107,19 +108,19 @@ void MenuController::willDisplayCellForIndex(HighlightCell * cell, int index) {
   switch (index)
   {
     case 1:
-      Integer(m_board->width()).writeTextInBuffer(buffer, 3);
+      Integer(m_board->width()).serialize(buffer, 3);
       ((MessageTableCellWithEditableText*)myCell)->setAccessoryText(buffer);
       break;
     case 2:
-      Integer(m_board->height()).writeTextInBuffer(buffer, 3);
+      Integer(m_board->height()).serialize(buffer, 3);
       ((MessageTableCellWithEditableText*)myCell)->setAccessoryText(buffer);
       break;
     case 3:
-      Integer(m_board->winCondition()).writeTextInBuffer(buffer, 3);
+      Integer(m_board->winCondition()).serialize(buffer, 3);
       ((MessageTableCellWithEditableText*)myCell)->setAccessoryText(buffer);
       break;
     case 4:
-      Integer(m_boardController.iaLevel()).writeTextInBuffer(buffer, 3);
+      Integer(m_boardController.iaLevel()).serialize(buffer, 3);
       ((MessageTableCellWithEditableText*)myCell)->setAccessoryText(buffer);
       break;
   }
@@ -131,7 +132,7 @@ bool MenuController::textFieldShouldFinishEditing(TextField * textField, Ion::Ev
 
 bool MenuController::textFieldDidFinishEditing(TextField * textField, const char * text, Ion::Events::Event event) {
   Context * globalContext = textFieldDelegateApp()->localContext();
-  float floatBody = Expression::approximateToScalar<float>(text, *globalContext);
+  float floatBody = Shared::PoincareHelpers::ApproximateToScalar<float>(text, *globalContext);
   if (std::isnan(floatBody) || std::isinf(floatBody)) {
     floatBody = 3;
   }

@@ -1,5 +1,5 @@
-snapshots += Tictactoe::App::Snapshot
-snapshot_headers += apps/tic_tac_toe/app.h
+apps += Tictactoe::App
+app_headers += apps/tic_tac_toe/app.h
 
 app_objs += $(addprefix apps/tic_tac_toe/,\
   app.o\
