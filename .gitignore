@@ -1,0 +1,4 @@
+*.d
+*.o
+tictactoe_icon.cpp
+tictactoe_icon.h
